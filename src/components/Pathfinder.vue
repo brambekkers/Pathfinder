@@ -1,23 +1,14 @@
 <template>
 	<div id="pathfinder">
 		<div>X: {{x}}, Y: {{y}}</div>
-		<div
-			id="grid"
-			@mousedown="startDrag"
-			@mousemove="doDrag"
-		>
+		<div id="grid" @mousedown="startDrag" @mousemove="doDrag">
 			<div
 				v-for="(row, index) of grid"
 				class="row"
 				:key="`row${index}`"
 				:style="{ height: cellSize + 'px' }"
 			>
-				<Cell
-					v-for="(cell, index) of row"
-					:size="cellSize"
-					:data="cell"
-					:key="`cell${index}`"
-				/>
+				<Cell v-for="(cell, index) of row" :size="cellSize" :data="cell" :key="`cell${index}`" />
 			</div>
 		</div>
 	</div>
@@ -67,6 +58,7 @@ export default {
 				for (let x = 0; x < this.cellAmount.width; x++) {
 					grid[y].push({
 						pos: { x, y },
+						disableInput: false,
 						start: false,
 						finish: false,
 						waypoint: false,
@@ -96,6 +88,7 @@ export default {
 			this.$store.commit("newGrid", grid);
 		},
 		startDrag() {
+			
 			this.dragging = true;
 			this.x = this.y = 0;
 		},
@@ -115,7 +108,15 @@ export default {
 					this.x = newX;
 					this.y = newY;
 
-					this.$store.dispatch("add", this.grid[newY][newX]);
+					if(!this.grid[newY][newX].disableInput){
+						this.grid[newY][newX].disableInput = true
+						this.$store.dispatch("add", this.grid[newY][newX]);
+
+						setTimeout(()=>{
+							this.grid[newY][newX].disableInput = false
+						},500)
+					}
+					
 				}
 			}
 		}
@@ -132,32 +133,32 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#pathfinder {
-	flex-grow: 1;
-	padding: 0 30px 30px 30px;
-}
+	#pathfinder {
+		flex-grow: 1;
+		padding: 0 30px 30px 30px;
+	}
 
-#grid {
-	height: 100%;
-	box-sizing: border-box;
+	#grid {
+		height: 100%;
+		box-sizing: border-box;
 
-	.row {
-		display: flex;
+		.row {
+			display: flex;
 
-		// Single Cell
-		div {
-			border-top: 1px solid #adc7ea;
-			border-left: 1px solid #adc7ea;
-			&:last-of-type {
-				border-right: solid 1px #adc7ea;
-			}
-		}
-
-		&:last-of-type {
+			// Single Cell
 			div {
-				border-bottom: solid 1px #adc7ea;
+				border-top: 1px solid #adc7ea;
+				border-left: 1px solid #adc7ea;
+				&:last-of-type {
+					border-right: solid 1px #adc7ea;
+				}
+			}
+
+			&:last-of-type {
+				div {
+					border-bottom: solid 1px #adc7ea;
+				}
 			}
 		}
 	}
-}
 </style>

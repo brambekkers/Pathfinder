@@ -10,41 +10,43 @@ export default class ASTAR {
 
     start() {
         return new Promise(async (resolve, reject) => {
-            console.log('A* Search started')
-            await this.findStartAndFinishCell()
-            this.toVisitCell.push(this.startCell)
+            try {
+                console.log('A* Search started')
+                await this.findStartAndFinishCell()
+                this.toVisitCell.push(this.startCell)
+                // Loop trough to visit cells
+                while (this.toVisitCell.length) {
+                    await this.visitCell(this.toVisitCell[0])
+                }
 
-            // Loop trough to visit cells
-            while (this.toVisitCell.length) {
-                await this.visitCell(this.toVisitCell[0])
+                // Make Path visible
+                const path = await this.findPath()
+
+                resolve(path)
+                
+            } catch (error) {
+                reject(error)
             }
-
-            // Make Path visible
-            const path = await this.findPath()
-
-            resolve(path)
-
         });
     }
 
     findStartAndFinishCell() {
         return new Promise((resolve, reject) => {
-            let startCellFound = false
-            let finishtCellFound = false
             for (const row of this.grid) {
                 for (const cell of row) {
                     if (cell.start) {
                         this.startCell = cell
-                        startCellFound = true
                     }
                     if (cell.finish) {
                         this.finishCell = cell
-                        finishtCellFound = true
                     }
-                    if (startCellFound && finishtCellFound) resolve()
+                   
+
                 }
             }
-            reject()
+
+            if (this.startCell && this.finishCell) resolve()
+            else reject('no start or finish cell')
         })
     }
 
