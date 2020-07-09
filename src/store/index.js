@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import Dijkstra from "./scripts/dijkstra";
-import ASTAR from "./scripts/aSTAR";
+import Dijkstra from "@/scripts/dijkstra";
+import ASTAR from "@/scripts/aSTAR";
 
 
 
