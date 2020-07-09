@@ -1,3 +1,7 @@
+// Maze Generators
+import RBT from "@/scripts/RBT";
+
+// Path Algorithme
 import Dijkstra from "@/scripts/dijkstra";
 import ASTAR from "@/scripts/aSTAR";
 
@@ -18,21 +22,32 @@ export default {
     actions: {
         async visualize({ getters, dispatch }) {
             const algorithme = getters.algorithme;
-            let result;
 
             // Check for error
             if (!algorithme) {
                 alert("No Algorithme selected");
                 return;
             }
-            // Reset grid
-            dispatch("resetGrid");
 
             // Run algorithme
             if (algorithme === "Dijkstra Algorithme") dispatch("runDijkstra");
             if (algorithme === "A* Search") dispatch("runAStar");
         },
-        async runDijkstra({ getters }) {
+        async runRBT({ getters, dispatch }) {
+            // Reset grid
+            dispatch("resetGrid");
+
+            const rbt = new RBT(getters.grid, getters.speedNum);
+            try {
+                const result = await rbt.start();
+            } catch (error) {
+                alert(error);
+            }
+        },
+        async runDijkstra({ getters, dispatch }) {
+            // Reset grid
+            dispatch("resetGrid");
+
             const dijkstra = new Dijkstra(getters.grid, getters.speedNum);
             try {
                 const result = await dijkstra.start();
@@ -40,7 +55,10 @@ export default {
                 alert(error);
             }
         },
-        async runAStar({ getters }) {
+        async runAStar({ getters, dispatch }) {
+            // Reset grid
+            dispatch("resetGrid");
+
             const aSTAR = new ASTAR(getters.grid, getters.speedNum);
             try {
                 const result = await aSTAR.start();

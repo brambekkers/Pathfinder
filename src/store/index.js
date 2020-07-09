@@ -11,7 +11,6 @@ export default new Vuex.Store({
     state: {
         speed: "fast",
         speeds: {
-            instant: 0,
             fast: 5,
             medium: 50,
             slow: 500

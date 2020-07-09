@@ -69,7 +69,7 @@ export default {
 						previousCell: {
 							x: null,
 							y: null
-						},
+						}, 
 
 						// Algorithmes
 						dijkstra: {
@@ -81,6 +81,9 @@ export default {
 							distFromStart: Infinity,
 							distToFinish: Infinity,
 							fCost: Infinity
+						},
+						RBT:{
+							
 						}
 					});
 				}
