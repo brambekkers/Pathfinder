@@ -41,8 +41,10 @@ export default class ASTAR {
                 }
             }
 
-            if (this.startCell && this.finishCell) resolve();
-            else reject("no start or finish cell");
+            if (!this.startCell && !this.finishCell) reject("No start and finish cell");
+            else if (!this.startCell) reject("No start cell");
+            else if (!this.finishCell) reject("No finish cell");
+            else resolve();
         });
     }
 

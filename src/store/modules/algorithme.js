@@ -1,3 +1,5 @@
+import Vue from "vue";
+
 // Maze Generators
 import RBT from "@/scripts/RBT";
 
@@ -23,9 +25,13 @@ export default {
         async visualize({ getters, dispatch }) {
             const algorithme = getters.algorithme;
 
-            // Check for error
+            // Check if algorithme has been selected
             if (!algorithme) {
-                alert("No Algorithme selected");
+                Vue.swal({
+                    icon: "error",
+                    title: "Algorithme",
+                    text: "No Algorithme selected"
+                });
                 return;
             }
 
@@ -52,7 +58,11 @@ export default {
             try {
                 const result = await dijkstra.start();
             } catch (error) {
-                alert(error);
+                Vue.swal({
+                    icon: "error",
+                    title: "error",
+                    text: error
+                });
             }
         },
         async runAStar({ getters, dispatch }) {
@@ -63,7 +73,11 @@ export default {
             try {
                 const result = await aSTAR.start();
             } catch (error) {
-                alert(error);
+                Vue.swal({
+                    icon: "error",
+                    title: "error",
+                    text: error
+                });
             }
         }
     }

@@ -14,7 +14,7 @@ export default class RBT {
 
         while (this.loop) {
             const neighbors = await this.findNeighbors(this.currentCell.pos);
-            const avalibleNeighbors = neighbors.filter((n) => !n.visited && !n.wall);
+            const avalibleNeighbors = neighbors.filter((n) => this.isAvalible(n));
 
             if (avalibleNeighbors.length > 0) {
                 await this.updateNeighbors(avalibleNeighbors);
@@ -64,7 +64,7 @@ export default class RBT {
             for (let y = 0; y < this.grid.length; y++) {
                 for (let x = 0; x < this.grid[0].length; x++) {
                     const c = this.grid[y][x];
-                    if (!c.visited && !c.wall) arr.push(c);
+                    if (this.isAvalible(c)) arr.push(c);
                 }
             }
             resolve(arr);
@@ -74,10 +74,8 @@ export default class RBT {
         return new Promise((resolve, reject) => {
             setTimeout(async () => {
                 const avalibleCells = await this.avalibleCells();
-                console.log("test");
-
                 if (!avalibleCells.length) {
-                    this.loop = false;
+                    this.stopAlgorithme();
                     return;
                 }
                 const random = Math.floor(Math.random() * avalibleCells.length);
@@ -90,7 +88,7 @@ export default class RBT {
         return new Promise(async (resolve, reject) => {
             for (let i = this.visitedCells.length - 1; i >= 0; i--) {
                 const neighbors = await this.findNeighbors(this.visitedCells[i]);
-                const avalibleNeighbors = neighbors.filter((n) => !n.visited && !n.wall);
+                const avalibleNeighbors = neighbors.filter((n) => this.isAvalible(n));
 
                 if (avalibleNeighbors.length > 0) {
                     this.currentCell = avalibleNeighbors[0];
@@ -106,5 +104,18 @@ export default class RBT {
                 }
             }
         });
+    }
+    isAvalible(c) {
+        return !c.visited && !c.wall && !c.finish && !c.start && !c.waypoint;
+    }
+
+    stopAlgorithme() {
+        this.loop = false;
+        for (let y = 0; y < this.grid.length; y++) {
+            for (let x = 0; x < this.grid[0].length; x++) {
+                const c = this.grid[y][x];
+                c.visited = false;
+            }
+        }
     }
 }
