@@ -2,6 +2,10 @@ import Vue from "vue";
 
 // Maze Generators
 import RBT from "@/scripts/RBT";
+import RPair from "@/scripts/RPair";
+
+// Patterns
+import OuterWall from "@/scripts/outerWall";
 
 // Path Algorithme
 import Dijkstra from "@/scripts/dijkstra";
@@ -50,6 +54,29 @@ export default {
                 alert(error);
             }
         },
+        async runRPair({ getters, dispatch }) {
+            // Reset grid
+            dispatch("resetGrid");
+
+            const rpair = new RPair(getters.grid, getters.speedNum);
+            try {
+                const result = await rpair.start();
+            } catch (error) {
+                alert(error);
+            }
+        },
+        async runOuterWall({ getters, dispatch }) {
+            // Reset grid
+            dispatch("resetGrid");
+
+            const outerWall = new OuterWall(getters.grid, getters.speedNum);
+            try {
+                const result = await outerWall.start();
+            } catch (error) {
+                alert(error);
+            }
+        },
+        
         async runDijkstra({ getters, dispatch }) {
             // Reset grid
             dispatch("resetGrid");

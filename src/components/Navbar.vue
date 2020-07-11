@@ -26,9 +26,12 @@
                     <span class="dropdownIcon">▼</span>
                 </div>
                 <div class="dropdown-content align-left">
-                    <a href="#" @click="$store.dispatch('runRBT')">Recursive backtracker</a>
-                    <a href="#">Maze 1</a>
-                    <a href="#">Maze 1</a>
+                    <p>Algorithmes</p>
+                    <a href="#" @click="$store.dispatch('runRBT')">Recursive Backtracker</a>
+                    <a href="#" @click="$store.dispatch('runRPair')">Recursive Pairs</a>
+                    
+                    <p>Patterns</p>
+                    <a href="#" @click="$store.dispatch('runOuterWall')">Outer Walls</a>
                     <a href="#">Maze 1</a>
                 </div>
             </div>
@@ -178,6 +181,13 @@ $nav-selected-color: rgb(90, 214, 208);
                 box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
                 z-index: 1;
                 border-radius: 0 0 $nav-border-radius $nav-border-radius;
+
+                p{
+                    font-family: "Varela Round", sans-serif !important;
+                    text-decoration: underline;
+                    margin: 15px 0 5px 10px;
+                    font-weight: 400;
+                }
 
                 a {
                     color: #f0f0f0;

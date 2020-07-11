@@ -19,7 +19,7 @@ export default class RBT {
             if (avalibleNeighbors.length > 0) {
                 await this.updateNeighbors(avalibleNeighbors);
             } else {
-                this.currentCell.wall = true;
+                this.currentCell.visited = true;
                 await this.getCellFromBacktrack();
             }
         }
@@ -46,8 +46,9 @@ export default class RBT {
             const randomNum = Math.floor(Math.random() * neighbors.length);
             setTimeout(() => {
                 for (let i = 0; i < neighbors.length; i++) {
-                    if (i != randomNum) {
-                        neighbors[i].wall = Math.random() < 0.8 ? true : false;
+                    if (i != randomNum && Math.random() < 0.8) {
+                        neighbors[i].wall = true;
+                        neighbors[i].visited = true;
                     } else {
                         this.visitedCells.push({ ...this.currentCell.pos });
                         this.currentCell = neighbors[randomNum];
